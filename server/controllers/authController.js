@@ -10,8 +10,8 @@ const signup = async (req, res) => {
             return res.status(400).json({ success: false, message: "User already exists" });
         }
         // 1234 :nhdciudsgcusdgc -> This is how hasshed password looks like
-        const hasshedPassword = await bcrypt.hash(password, 10);
-        user = new User({ name, email, password: hasshedPassword, phone });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user = new User({ name, email, password: hashedPassword, phone });
         await user.save();
         return res.status(201).json({ success: true, message: "User created successfully" });
 
@@ -24,6 +24,7 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
     const { email, password } = req.body;
     try {
+        
         let user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
